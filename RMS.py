@@ -36,10 +36,11 @@ def display_menu():
             print("Error in print_menu ", e)
 
 def generate_bill():
-    heading('Generate Bill')
-    display_menu()
     #  lst_prices stores prices from file of each dish
     lst_prices = []
+    customer_dish_list = []
+    heading('Generate Bill')
+    display_menu()
     with open('dbRMS.txt','r') as file:
         content = file.readlines()
         for item in content:
@@ -47,18 +48,18 @@ def generate_bill():
             price = parts[1].split(':')[1]   # splites first index of parts list with respect to ':' after spliting taking 1st index vales
             lst_prices.append(int(price)) # appednding each extracted vales to price list
             print(lst_prices)
-            # print(lst_prices)
-        # user_choice = int(input('Enter your choice: '))
+            print(lst_prices)
 
-        # while True:
-        #         # taking input for dish and its price
-        #         dish_num = input("Enter dish number: ")
-        #         yes_no = input("Another dish to bill (yes/no): ")
-        #         # file.writelines(f'Dish name : {dish_name} | Price : {dish_price}\n')
-        #         if yes_no == 'no':
-        #             print("Bill generated successfully ...")
-        #             break
-
+        while True:
+                # taking input for dish and its price
+                dish_num = input("Enter dish number: ")
+                yes_no = input("Another dish to bill (yes/no): ")
+                customer_dish_list.append(dish_num)
+                # file.writelines(f'Dish name : {dish_name} | Price : {dish_price}\n')
+                if yes_no == 'no':
+                    print("Bill generated successfully ...")
+                    break
+        print(customer_dish_list)
 
 
 def main():
