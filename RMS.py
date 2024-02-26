@@ -16,7 +16,7 @@ def add_dish():
                 dish_price = int(input("Enter dish price: "))
                 add_moredish = input("Add more dishes (yes/no): ")
                 # writing into dbRMs.txt 
-                file.writelines(f'\nDish name : {dish_name} | Price : {dish_price}')
+                file.writelines(f'Dish name : {dish_name} | Price : {dish_price}\n')
                 # if the input is no from user it will not excute further more
                 if add_moredish == 'no':
                     print("Added successfully ...")
@@ -35,10 +35,34 @@ def display_menu():
         except Exception as e:
             print("Error in print_menu ", e)
 
+def print_bill(customer_dish_num, content):
+    customer_order = []
+    prices = []
+    for i in customer_dish_num:
+        customer_order.append(content[i])
+        
+    os.system('cls')
+    heading('Bill')
+    for i in customer_order:
+        print(i)
+
+    for item in customer_order:
+            parts = item.split('|')          
+            price = parts[1].split(':')[1]   
+            prices.append(int(price))
+    total = 0
+    for i in prices:
+        total = total + i
+
+    print(f'Total bill: {total}')
+
+    
 def generate_bill():
     #  lst_prices stores prices from file of each dish
     lst_prices = []
     customer_dish_list = []
+    content = ''
+    customer_order = []
     heading('Generate Bill')
     display_menu()
     with open('dbRMS.txt','r') as file:
@@ -47,20 +71,17 @@ def generate_bill():
             parts = item.split('|')          # splites string With respect to '|'
             price = parts[1].split(':')[1]   # splites first index of parts list with respect to ':' after spliting taking 1st index vales
             lst_prices.append(int(price)) # appednding each extracted vales to price list
-            print(lst_prices)
-            print(lst_prices)
 
         while True:
                 # taking input for dish and its price
-                dish_num = input("Enter dish number: ")
+                dish_num = int(input("Enter dish number: "))
                 yes_no = input("Another dish to bill (yes/no): ")
                 customer_dish_list.append(dish_num)
                 # file.writelines(f'Dish name : {dish_name} | Price : {dish_price}\n')
                 if yes_no == 'no':
                     print("Bill generated successfully ...")
                     break
-        print(customer_dish_list)
-
+        print_bill(customer_dish_list, content)
 
 def main():
     lst = ['Add Dish', 'show Dish', 'Generate Bill', 'Search Dish', 'Delete Dish', 'Sort dish', 'Exit']
