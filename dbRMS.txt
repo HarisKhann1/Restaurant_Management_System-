@@ -1,2 +1,0 @@
-Dish name : Pasta | Price : 100
-Dish name : Alu | Price : 200
