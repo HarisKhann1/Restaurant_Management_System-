@@ -38,19 +38,28 @@ def display_menu():
 def generate_bill():
     heading('Generate Bill')
     display_menu()
-    # dish_sno = int(input('Enter dish sno: '))
-    with open('dbRMS.csv','r') as file:
-        x = file.readlines()
-        print(x)
-        
-        for item in x:
-            dish_name = item.split(' | ')
-            dish = dish_name[0].split(' : ')
-            print("dish split",dish[1])
-            price = dish_name[1].split(' : ')
-            print("price split",price)
-            print(dish, price)
-            
+    #  lst_prices stores prices from file of each dish
+    lst_prices = []
+    with open('dbRMS.txt','r') as file:
+        content = file.readlines()
+        for item in content:
+            parts = item.split('|')          # splites string With respect to '|'
+            price = parts[1].split(':')[1]   # splites first index of parts list with respect to ':' after spliting taking 1st index vales
+            lst_prices.append(int(price)) # appednding each extracted vales to price list
+            print(lst_prices)
+            # print(lst_prices)
+        # user_choice = int(input('Enter your choice: '))
+
+        # while True:
+        #         # taking input for dish and its price
+        #         dish_num = input("Enter dish number: ")
+        #         yes_no = input("Another dish to bill (yes/no): ")
+        #         # file.writelines(f'Dish name : {dish_name} | Price : {dish_price}\n')
+        #         if yes_no == 'no':
+        #             print("Bill generated successfully ...")
+        #             break
+
+
 
 def main():
     lst = ['Add Dish', 'show Dish', 'Generate Bill', 'Search Dish', 'Delete Dish', 'Sort dish', 'Exit']
