@@ -1,12 +1,16 @@
 import os
 
+
 def heading(name):
     os.system('cls')
     print(f'\n--------------------- {name} -----------------------\n')
 
+def closeLine():
+    print("------------------------------------------------")
+    
 def add_dish():
     # here all data will be stored in dbRMD.txt
-    print('---------------------- Little Lemon --------------------')
+    heading('ADD DISHES')
 
     with open("dbRMS.txt",'a') as file:
         try:
@@ -16,7 +20,7 @@ def add_dish():
                 dish_price = int(input("Enter dish price: "))
                 add_moredish = input("Add more dishes (yes/no): ")
                 # writing into dbRMs.txt 
-                file.writelines(f'Dish name : {dish_name} | Price : {dish_price}\n')
+                file.writelines(f'{dish_name} : {dish_price}\n')
                 # if the input is no from user it will not excute further more
                 if add_moredish == 'no':
                     print("Added successfully ...")
@@ -25,20 +29,25 @@ def add_dish():
         except Exception as e:
             print("Error in write to database ...", e)
 
-def display_menu():
-     # displaying all dishes with price from database (dbRMS)
+def load_data_from_file():
     database = ''
-    heading('menu')
-
     with open('dbRMS.txt', 'r') as file:
         try:
             database = file.readlines()
-            for count,content in enumerate(database, 1):
-                print(f' {count}) {content}')
         except Exception as e:
             print("Error in print_menu ", e)
 
     return database
+
+# displaying all dishes with price from database (dbRMS)
+def display_menu():
+    heading('Menu')
+    database = load_data_from_file()
+
+    for count,content in enumerate(database, 1):
+        print(f' {count}) {content}')
+
+    closeLine()
 
 def print_bill(customer_dish_num, content):
     customer_order = []
@@ -52,42 +61,58 @@ def print_bill(customer_dish_num, content):
         print(i)
 
     for item in customer_order:
-        parts = item.split('|')          
-        price = parts[1].split(':')[1]   
+        parts = item.split(':')          
+        price = parts[1]   
         prices.append(int(price))
 
     total = 0
     for i in prices:
         total = total + i
-
+        
+    closeLine()
     print(f'Total bill: {total}')
+    closeLine()
 
-    
 def generate_bill():
-    #  lst_prices stores prices from file of each dish
-    lst_prices = []
-    customer_dish_list = []
-    customer_order = []
+
+    customer_dish_num = []  
+    content = load_data_from_file()
     
     heading('Generate Bill')
-    content = display_menu()
-
-    for item in content:
-        parts = item.split('|')          # splites string With respect to '|'
-        price = parts[1].split(':')[1]   # splites first index of parts list with respect to ':' after spliting taking 1st index vales
-        lst_prices.append(int(price)) # appednding each extracted vales to price list
+    display_menu()
 
     while True:
         # taking input for dish and its price
         dish_num = int(input("Enter dish number: "))
         yes_no = input("Another dish to bill (yes/no): ")
-        customer_dish_list.append(dish_num)
+        customer_dish_num.append(dish_num-1)
 
         if yes_no == 'no':
             print("Bill generated successfully ...")
             break
-    print_bill(customer_dish_list, content)
+    print_bill(customer_dish_num, content)
 
+def search_dish():
+
+    heading('Search section')
+    content = load_data_from_file()
+    names = []
+
+    for name in content:
+        parts = name.split(':')
+        names.append(parts[0].strip())
+    try:
+        search_name = input("Enter Dish Name: ")
+        x = names.index(search_name)
+
+        print(f'Dish Found\n{content[x]}')
+        closeLine()
+
+    except ValueError:
+            print("\nDish not found ...", )
+            closeLine()
+    
+    
 def main():
     lst = ['Add Dish', 'show Dish', 'Generate Bill', 'Search Dish', 'Delete Dish', 'Sort dish', 'Exit']
     # displaying above list
@@ -97,6 +122,7 @@ def main():
         for num,list in enumerate(lst,1):
             print(num, list)
 
+        closeLine()
         choice = int(input('Enter your choice: '))
         if choice == 7:
             flag = False
@@ -109,6 +135,8 @@ def main():
                     display_menu()
                 case 3:
                     generate_bill()
+                case 4:
+                    search_dish()
 
         wait = input('\nPress Enter ...')
     
