@@ -27,7 +27,7 @@ def add_dish():
                     break
 
         except Exception as e:
-            print("Error in write to database ...", e)
+            print("Error: Can't store data in file ...", e)
 
 def load_data_from_file():
     database = ''
@@ -35,7 +35,7 @@ def load_data_from_file():
         try:
             database = file.readlines()
         except Exception as e:
-            print("Error in print_menu ", e)
+            print("Error: Can't load data from file ", e)
 
     return database
 
@@ -105,13 +105,45 @@ def search_dish():
         search_name = input("Enter Dish Name: ")
         x = names.index(search_name)
 
-        print(f'Dish Found\n{content[x]}')
+        print(f'\nDish Found\n{content[x]}')
         closeLine()
 
     except ValueError:
-            print("\nDish not found ...", )
+            print("\nError: Dish not found ...", )
             closeLine()
-    
+
+def delete_dish():
+
+    heading('Delete section')
+    content = load_data_from_file()
+    names = []
+    new_dish_list = []
+
+    for name in content:
+        parts = name.split(':')
+        names.append(parts[0].strip())
+    try:
+        search_name = input("Enter Dish Name: ")
+        x = names.index(search_name)
+        print(f'\nError: Dish Found\n{content[x]}')
+
+        for num, item in enumerate(content):
+            if num == x:
+                pass
+            else:
+                new_dish_list.append(item)
+
+        with open('dbRMS.txt', 'w') as file:
+            for item in new_dish_list:
+                file.writelines(item)
+        # print(new_dish_list)
+
+        print(f'\nDish Delete Successfully ...')
+        closeLine()
+
+    except ValueError:
+            print("\nError: Dish not found ...", )
+            closeLine()
     
 def main():
     lst = ['Add Dish', 'show Dish', 'Generate Bill', 'Search Dish', 'Delete Dish', 'Sort dish', 'Exit']
@@ -137,6 +169,8 @@ def main():
                     generate_bill()
                 case 4:
                     search_dish()
+                case 5:
+                    delete_dish()
 
         wait = input('\nPress Enter ...')
     
