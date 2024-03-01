@@ -148,7 +148,7 @@ def delete_dish():
         search_name = input("Enter Dish Name: ")
         # returns index if the given dish name in the list
         x = names.index(search_name)
-        print(f'\nError: Dish Found\n{content[x]}')
+        print(f'\nDish Found\n{content[x]}')
 
         # appending all item in new_dish_list except the given dish name to be deleted
         for num, item in enumerate(content):
