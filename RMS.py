@@ -53,25 +53,29 @@ def display_menu():
     closeLine()
 
 def print_bill(customer_dish_num, content, dish_countity):
+
+    heading('Bill')
     customer_order = []
     prices = []
+    price_and_quantity = []
+    
     for i in customer_dish_num:
         customer_order.append(content[i])
         
-    os.system('cls')
-    heading('Bill')
-    for num, i in enumerate(customer_order):
-        print(f'{num+1}. {i}countity : {dish_countity[num]}\n')
-
     for item in customer_order:
         parts = item.split(':')          
         price = parts[1]   
         prices.append(int(price))
-
+        
     total = 0
     for num, value in enumerate(prices):
-        total = total + (value * dish_countity[num])
-        
+        price_of_item = value * dish_countity[num]
+        total = total + price_of_item
+        price_and_quantity.append(price_of_item)
+
+    for num, i in enumerate(customer_order):
+        print(f'{num+1}. {i}countity : {dish_countity[num]} --> {price_and_quantity[num]}\n')
+
     closeLine()
     print(f'Total bill: {total}')
     closeLine()
